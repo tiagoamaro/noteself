@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   include Authentication
-  before_action :set_note, only: %i[ show edit update destroy sync_body ]
+  before_action :set_note, only: %i[ show edit update destroy ]
 
   # GET /notes or /notes.json
   def index
@@ -40,26 +40,19 @@ class NotesController < ApplicationController
   def update
     respond_to do |format|
       if @note.update(note_params)
+        # Broadcast the update via Action Cable for real-time sync
+        NotesChannel.broadcast_to(@note, {
+          body: @note.body,
+          title: @note.title,
+          note_id: @note.id
+        })
+
         format.html { redirect_to @note, notice: "Note was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @note }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @note.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH /notes/1/sync_body - Real-time sync of body field
-  def sync_body
-    if @note.update(body: params[:body])
-      # Broadcast the update via Turbo Streams
-      NotesChannel.broadcast_to(@note, {
-        body: @note.body,
-        note_id: @note.id
-      })
-      head :ok
-    else
-      head :unprocessable_entity
     end
   end
 

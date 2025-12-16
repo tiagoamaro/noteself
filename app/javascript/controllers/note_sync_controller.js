@@ -3,19 +3,20 @@ import { createConsumer } from "@rails/actioncable"
 
 export default class extends Controller {
   static values = { noteId: Number }
-  static targets = ["body"]
+  static targets = ["body", "title"]
 
   connect() {
     console.log("NoteSyncController connected, noteId:", this.noteIdValue)
     console.log("bodyTarget available:", this.hasBodyTarget)
+    console.log("titleTarget available:", this.hasTitleTarget)
     
     // Wait a tick to ensure DOM is ready
     setTimeout(() => {
-      if (this.hasBodyTarget) {
+      if (this.hasBodyTarget || this.hasTitleTarget) {
         this.subscribe()
-        this.setupInputHandler()
+        this.setupInputHandlers()
       } else {
-        console.error("bodyTarget not found on connect!")
+        console.error("No targets found on connect!")
       }
     }, 0)
   }
@@ -53,26 +54,45 @@ export default class extends Controller {
     }
   }
 
-  setupInputHandler() {
+  setupInputHandlers() {
     // Debounce input to avoid too many broadcasts
-    let timeout
-    this.bodyTarget.addEventListener("input", (e) => {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        this.syncBody(e.target.value)
-      }, 500) // Wait 500ms after user stops typing
-    })
+    let bodyTimeout
+    let titleTimeout
+    
+    if (this.hasBodyTarget) {
+      this.bodyTarget.addEventListener("input", (e) => {
+        clearTimeout(bodyTimeout)
+        bodyTimeout = setTimeout(() => {
+          this.syncBody(e.target.value)
+        }, 500) // Wait 500ms after user stops typing
+      })
+    }
+    
+    if (this.hasTitleTarget) {
+      this.titleTarget.addEventListener("input", (e) => {
+        clearTimeout(titleTimeout)
+        titleTimeout = setTimeout(() => {
+          this.syncTitle(e.target.value)
+        }, 500) // Wait 500ms after user stops typing
+      })
+    }
   }
 
   async syncBody(body) {
-    // Send update to server via HTTP
-    const response = await fetch(`/notes/${this.noteIdValue}/sync_body`, {
+    // Get current title value to preserve it
+    const title = this.hasTitleTarget ? this.titleTarget.value : ""
+    
+    // Send update to server via HTTP using standard update endpoint
+    const formData = new FormData()
+    formData.append("note[body]", body)
+    formData.append("note[title]", title)
+    
+    const response = await fetch(`/notes/${this.noteIdValue}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
       },
-      body: JSON.stringify({ body: body })
+      body: formData
     })
     
     if (!response.ok) {
@@ -80,27 +100,49 @@ export default class extends Controller {
     }
   }
 
+  async syncTitle(title) {
+    // Get current body value to preserve it
+    const body = this.hasBodyTarget ? this.bodyTarget.value : ""
+    
+    // Send update to server via HTTP using standard update endpoint
+    const formData = new FormData()
+    formData.append("note[title]", title)
+    formData.append("note[body]", body)
+    
+    const response = await fetch(`/notes/${this.noteIdValue}`, {
+      method: "PATCH",
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: formData
+    })
+    
+    if (!response.ok) {
+      console.error("Failed to sync title")
+    }
+  }
+
   handleUpdate(data) {
     console.log("handleUpdate called with:", data)
-    console.log("bodyTarget:", this.bodyTarget)
-    console.log("activeElement:", document.activeElement)
     
-    // Check if bodyTarget exists
-    if (!this.bodyTarget) {
-      console.error("bodyTarget not found!")
-      return
+    // Update body if target exists and doesn't have focus
+    if (this.hasBodyTarget && document.activeElement !== this.bodyTarget) {
+      const newBodyValue = data.body || ""
+      console.log("Updating body value to:", newBodyValue)
+      this.bodyTarget.value = newBodyValue
+      this.bodyTarget.dispatchEvent(new Event('input', { bubbles: true }))
+    } else if (this.hasBodyTarget) {
+      console.log("Skipping body update - user is typing")
     }
     
-    // Only update if the field doesn't have focus (to avoid interrupting user typing)
-    if (document.activeElement !== this.bodyTarget) {
-      const newValue = data.body || ""
-      console.log("Updating textarea value to:", newValue)
-      this.bodyTarget.value = newValue
-      
-      // Trigger input event to ensure any listeners are notified
-      this.bodyTarget.dispatchEvent(new Event('input', { bubbles: true }))
-    } else {
-      console.log("Skipping update - user is typing")
+    // Update title if target exists and doesn't have focus
+    if (this.hasTitleTarget && document.activeElement !== this.titleTarget) {
+      const newTitleValue = data.title || ""
+      console.log("Updating title value to:", newTitleValue)
+      this.titleTarget.value = newTitleValue
+      this.titleTarget.dispatchEvent(new Event('input', { bubbles: true }))
+    } else if (this.hasTitleTarget) {
+      console.log("Skipping title update - user is typing")
     }
   }
 }

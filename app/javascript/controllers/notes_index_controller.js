@@ -35,7 +35,12 @@ export default class extends Controller {
           },
           received: (data) => {
             console.log(`📨 Received update for note ${noteId}:`, data)
-            this.updateNoteBody(noteId, data.body)
+            if (data.body !== undefined) {
+              this.updateNoteBody(noteId, data.body)
+            }
+            if (data.title !== undefined) {
+              this.updateNoteTitle(noteId, data.title)
+            }
           }
         }
       )
@@ -61,6 +66,26 @@ export default class extends Controller {
     // Update the body text
     bodyElement.textContent = body || ""
     console.log(`✅ Updated body for note ${noteId}`)
+  }
+
+  updateNoteTitle(noteId, title) {
+    // Find the note element using the dom_id
+    const noteElement = document.getElementById(`note_${noteId}`)
+    if (!noteElement) {
+      console.warn(`Note element not found for note ${noteId}`)
+      return
+    }
+
+    // Find the title element within the note
+    const titleElement = noteElement.querySelector('[data-note-title]')
+    if (!titleElement) {
+      console.warn(`Title element not found for note ${noteId}`)
+      return
+    }
+
+    // Update the title text
+    titleElement.textContent = title || ""
+    console.log(`✅ Updated title for note ${noteId}`)
   }
 }
 
