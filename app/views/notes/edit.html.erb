@@ -1,6 +1,6 @@
 <% content_for :title, "Editing note" %>
 
-<div class="md:w-2/3 w-full">
+<div class="md:w-2/3 w-full" data-controller="note-sync" data-note-sync-note-id-value="<%= @note.id %>">
   <h1 class="font-bold text-4xl">Editing note</h1>
 
   <%= render "form", note: @note %>
