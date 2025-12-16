@@ -12,3 +12,11 @@ User.create!(
   email_address: "foo@bar.com",
   password: "password",
 )
+
+10.times do |i|
+  Note.create!(
+    user: User.first,
+      title: "Note ##{i + 1}",
+      body: "This is note ##{i + 1}.",
+    )
+end
