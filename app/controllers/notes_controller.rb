@@ -1,10 +1,11 @@
 class NotesController < ApplicationController
   include Authentication
   before_action :set_note, only: %i[ show edit update destroy ]
+  before_action :validate_note_ownership, only: %i[ show edit update destroy ]
 
   # GET /notes or /notes.json
   def index
-    @notes = Note.all
+    @notes = Current.user.notes
   end
 
   # GET /notes/1 or /notes/1.json
@@ -70,6 +71,16 @@ class NotesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_note
       @note = Note.find(params.expect(:id))
+    end
+
+    # Validate that the note belongs to the current user
+    def validate_note_ownership
+      unless @note.user == Current.user
+        respond_to do |format|
+          format.html { redirect_to notes_path, alert: "You don't have permission to access this note." }
+          format.json { render json: { error: "You don't have permission to access this note." }, status: :forbidden }
+        end
+      end
     end
 
     # Only allow a list of trusted parameters through.
