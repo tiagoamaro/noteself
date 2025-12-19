@@ -28,14 +28,15 @@
   </head>
 
   <body>
-
     <% if authenticated? %>
-      <div class="container mx-auto mt-28 px-5 flex">
-        <%= button_to "Sign Out", session_path, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer" %>
-      </div>
+      <header class="top-0 left-0 right-0 bg-white border-b border-gray-200 z-50">
+        <nav class="container mx-auto px-5 py-3 flex justify-end items-center">
+          <%= button_to "Sign Out", session_path, method: :delete, class: "text-sm text-gray-600 hover:text-gray-900 font-medium cursor-pointer px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors" %>
+        </nav>
+      </header>
     <% end %>
 
-    <main class="container mx-auto mt-28 px-5 flex">
+    <main class="container mx-auto <%= 'mt-16' if authenticated? %> px-5">
       <%= yield %>
     </main>
   </body>
