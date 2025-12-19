@@ -1,13 +1,16 @@
 <% content_for :title, "Editing note" %>
 
 <div class="md:w-2/3 w-full" data-controller="note-sync" data-note-sync-note-id-value="<%= @note.id %>">
-  <h1 class="font-bold text-4xl">Editing note</h1>
+  <h1 class="font-bold text-4xl mb-5">Editing note</h1>
+  <%= link_to "Back to notes", notes_path, class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium mb-5" %>
 
   <%= render "form", note: @note %>
 
-  <div class="flex flex-col sm:flex-row gap-2 mt-5">
-    <%= link_to "Show this note", @note, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-    <%= link_to "Back to notes", notes_path, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mt-5">
+    <div class="flex flex-col sm:flex-row gap-2">
+      <%= link_to "Show this note", @note, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+      <%= link_to "Back to notes", notes_path, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+    </div>
     <%= button_to "Destroy", @note, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
   </div>
 </div>
