@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
   include Authentication
-  before_action :set_note, only: %i[ show edit update destroy ]
-  before_action :validate_note_ownership, only: %i[ show edit update destroy ]
+  before_action :set_note, only: %i[ show edit update destroy preview ]
+  before_action :validate_note_ownership, only: %i[ show edit update destroy preview ]
 
   # GET /notes or /notes.json
   def index
@@ -66,6 +66,32 @@ class NotesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # GET /notes/:id/preview
+  def preview
+    # Always use the current database value for the preview
+    text = @note.body || ""
+    html = Commonmarker.to_html(text.to_s, options: {
+      parse: { smart: true },
+      render: { hardbreaks: true },
+      extension: {
+        strikethrough: true,
+        tagfilter: true,
+        table: true,
+        autolink: true,
+        tasklist: true
+      }
+    })
+
+    # Store the HTML for the view to render
+    @preview_html = html
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { render "preview_frame", layout: false }
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

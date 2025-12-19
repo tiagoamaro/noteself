@@ -7,8 +7,17 @@
 
   <h1 class="font-bold text-4xl">Showing note</h1>
 
-  <div id="<%= dom_id @note %>">
-    <%= render @note %>
+  <div id="<%= dom_id @note %>" class="w-full sm:w-auto my-5 space-y-5">
+    <div>
+      <strong class="block font-medium mb-1">Title:</strong>
+      <span data-note-title><%= @note.title %></span>
+    </div>
+    <div>
+      <strong class="block font-medium mb-1">Body:</strong>
+      <div data-note-body>
+        <%= render_markdown(@note.body, truncate: false) %>
+      </div>
+    </div>
   </div>
 
   <%= link_to "Edit this note", edit_note_path(@note), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
