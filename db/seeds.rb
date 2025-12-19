@@ -8,6 +8,9 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# We don't want to run seeds in production or test environments
+return unless Rails.env.local?
+
 User.create!(
   email_address: "foo@bar.com",
   password: "password",
