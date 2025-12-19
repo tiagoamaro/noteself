@@ -1,4 +1,4 @@
 <div class="prose prose-sm max-w-none">
-  <%= preview_html.html_safe %>
+  <%= sanitize preview_html, tags: %w[p br strong em u del s h1 h2 h3 h4 h5 h6 ul ol li blockquote code pre a img table thead tbody tr td th hr input label], attributes: %w[href src alt title class type checked disabled for id] %>
 </div>
 
