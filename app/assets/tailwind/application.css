@@ -1,1 +1,182 @@
 @import "tailwindcss";
+
+/* Markdown Styles */
+.prose {
+  @apply text-gray-700 leading-relaxed;
+}
+
+.prose p {
+  @apply mt-5 mb-5;
+}
+
+.prose h1 {
+  @apply text-4xl font-extrabold mt-0 mb-8 leading-tight;
+}
+
+.prose h2 {
+  @apply text-2xl font-bold mt-8 mb-4 leading-snug;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold mt-6 mb-2 leading-relaxed;
+}
+
+.prose h4 {
+  @apply text-lg font-semibold mt-6 mb-2 leading-[1.56];
+}
+
+.prose h5 {
+  @apply text-base font-semibold mt-6 mb-2 leading-normal;
+}
+
+.prose h6 {
+  @apply text-sm font-semibold mt-6 mb-2 leading-[1.43];
+}
+
+.prose strong {
+  @apply font-semibold text-gray-900;
+}
+
+.prose em {
+  @apply italic;
+}
+
+.prose a {
+  @apply text-blue-600 underline font-medium;
+}
+
+.prose a:hover {
+  @apply text-blue-700;
+}
+
+.prose ul,
+.prose ol {
+  @apply mt-5 mb-5 pl-[1.625rem];
+}
+
+.prose ul {
+  @apply list-disc;
+}
+
+.prose ol {
+  @apply list-decimal;
+}
+
+.prose li {
+  @apply mt-2 mb-2;
+}
+
+.prose blockquote {
+  @apply font-medium italic text-gray-900 border-l-4 border-gray-200 mt-6 mb-6 pl-4;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+.prose code {
+  @apply text-gray-900 font-semibold text-sm bg-gray-100 px-1.5 rounded;
+}
+
+.prose pre {
+  @apply text-gray-200 bg-gray-800 overflow-x-auto font-normal text-sm leading-[1.71] mt-[1.71em] mb-[1.71em] rounded-md py-[0.86em] px-[1.14em];
+}
+
+.prose pre code {
+  @apply bg-transparent border-0 rounded-none p-0;
+  font-weight: inherit;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.prose hr {
+  @apply border-gray-200 border-t mt-12 mb-12;
+}
+
+.prose table {
+  @apply w-full table-auto text-left mt-8 mb-8 text-sm leading-[1.71];
+}
+
+.prose thead {
+  @apply border-b border-gray-300;
+}
+
+.prose thead th {
+  @apply text-gray-900 font-semibold align-bottom pr-[0.57em] pb-[0.57em] pl-[0.57em];
+}
+
+.prose tbody tr {
+  @apply border-b border-gray-200;
+}
+
+.prose tbody td {
+  @apply align-baseline pt-[0.57em] pr-[0.57em] pb-[0.57em] pl-[0.57em];
+}
+
+.prose img {
+  @apply mt-8 mb-8;
+}
+
+.prose del {
+  @apply line-through;
+}
+
+.prose input[type="checkbox"] {
+  @apply mr-2;
+}
+
+.prose-sm {
+  @apply text-sm leading-[1.71];
+}
+
+.prose-sm p {
+  @apply mt-[1.14em] mb-[1.14em];
+}
+
+.prose-sm h1 {
+  @apply text-[2.14em] mt-0 mb-[0.8em] leading-[1.2];
+}
+
+.prose-sm h2 {
+  @apply text-[1.43em] mt-[1.6em] mb-[0.8em] leading-[1.4];
+}
+
+.prose-sm h3 {
+  @apply text-[1.29em] mt-[1.56em] mb-[0.44em] leading-[1.56];
+}
+
+.prose-sm h4 {
+  @apply text-[1.14em] mt-[1.43em] mb-[0.57em] leading-[1.43];
+}
+
+.prose-sm ul,
+.prose-sm ol {
+  @apply mt-[1.14em] mb-[1.14em] pl-[1.57em];
+}
+
+.prose-sm li {
+  @apply mt-[0.29em] mb-[0.29em];
+}
+
+.prose-sm blockquote {
+  @apply mt-[1.33em] mb-[1.33em] pl-[1.11em];
+}
+
+.prose-sm code {
+  @apply text-[0.86em];
+}
+
+.prose-sm pre {
+  @apply text-[0.86em] leading-[1.67] mt-[1.67em] mb-[1.67em] rounded py-[0.67em] px-4;
+}
+
+.prose-sm table {
+  @apply text-[0.86em] leading-normal;
+}
+
+.prose-sm thead th {
+  @apply pr-[0.57em] pb-[0.57em] pl-[0.57em];
+}
+
+.prose-sm tbody td {
+  @apply pt-[0.57em] pr-[0.57em] pb-[0.57em] pl-[0.57em];
+}
