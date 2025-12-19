@@ -1,9 +1,9 @@
 <div class="w-full sm:w-auto my-5">
   <span data-note-title class="font-medium"><%= note.title %></span>
-  <div class="text-sm text-gray-500 mt-1">
+  <div class="text-sm text-gray-500 mt-1 flex flex-col">
     <span>Created: <%= note.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
     <% if note.updated_at != note.created_at %>
-      <span class="ml-3">Updated: <%= note.updated_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+      <span>Updated: <%= note.updated_at.strftime("%B %d, %Y at %I:%M %p") %></span>
     <% end %>
   </div>
 </div>
