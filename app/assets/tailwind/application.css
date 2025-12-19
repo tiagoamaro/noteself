@@ -58,12 +58,36 @@
   @apply list-disc;
 }
 
+.prose ul:has(input[type="checkbox"]) {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Progressive indentation for deeper nesting levels */
+.prose ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
+  padding-left: 2.5rem;
+}
+
+.prose ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
+  padding-left: 3.5rem;
+}
+
 .prose ol {
   @apply list-decimal;
 }
 
 .prose li {
   @apply mt-2 mb-2;
+}
+
+.prose li:has(input[type="checkbox"]) {
+  list-style: none;
 }
 
 .prose blockquote {
@@ -153,8 +177,32 @@
   @apply mt-[1.14em] mb-[1.14em] pl-[1.57em];
 }
 
+.prose-sm ul:has(input[type="checkbox"]) {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose-sm ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
+  padding-left: 1.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Progressive indentation for deeper nesting levels */
+.prose-sm ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
+  padding-left: 2.5rem;
+}
+
+.prose-sm ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
+  padding-left: 3.5rem;
+}
+
 .prose-sm li {
   @apply mt-[0.29em] mb-[0.29em];
+}
+
+.prose-sm li:has(input[type="checkbox"]) {
+  list-style: none;
 }
 
 .prose-sm blockquote {
