@@ -2,6 +2,7 @@
 
 <div class="md:w-2/3 w-full" data-controller="note-sync" data-note-sync-note-id-value="<%= @note.id %>">
   <h1 class="font-bold text-4xl mb-5">Editing note</h1>
+  <p class="text-sm text-gray-500 mb-5">Last updated: <%= @note.updated_at.strftime("%B %d, %Y at %I:%M %p") %></p>
   <%= link_to "Back to notes", notes_path, class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium mb-5" %>
 
   <%= render "form", note: @note %>
