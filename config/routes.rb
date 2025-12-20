@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     member do
       get :preview
     end
+    resources :note_versions, only: [ :index ], path: "versions"
   end
   resource :session
   resources :passwords, param: :token

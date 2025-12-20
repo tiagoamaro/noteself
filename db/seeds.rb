@@ -363,3 +363,29 @@ notes_data.each do |note_data|
     body: note_data[:body]
   )
 end
+
+# Create 100 versions for the first note to test pagination
+if (first_note = Note.first)
+  base_title = first_note.title
+  base_body = first_note.body
+
+  # Start from 101 hours ago and work forward (so these are older than the initial version)
+  base_time = Time.current - 101.hours
+
+  100.times do |i|
+    # Create versions with slight variations to make them distinct
+    version_title = base_title
+    version_body = if i == 0
+                     base_body
+    else
+                     "#{base_body}\n\n---\n\n*Version #{i + 1}*"
+    end
+
+    NoteVersion.create!(
+      note: first_note,
+      title: version_title,
+      body: version_body,
+      created_at: base_time + i.hours
+    )
+  end
+end

@@ -1,0 +1,38 @@
+<% content_for :title, "Note Versions" %>
+
+<div class="md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl mb-5">Versions for: <%= @note.title %></h1>
+  <p class="text-sm text-gray-500 mb-5">Total versions: <%= @note.note_versions.count %></p>
+  
+  <%= link_to "Back to note", @note, class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium mb-5" %>
+  <%= link_to "Edit note", edit_note_path(@note), class: "rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium mb-5 ml-2" %>
+
+  <% if @versions.any? %>
+    <!-- Pagination -->
+      <% if @pagy.pages > 1 %>
+        <div class="flex justify-center items-center gap-2 mb-5">
+          <%== @pagy.series_nav %>
+        </div>
+      <% end %>
+
+    <div class="space-y-4 mb-5">
+      <% @versions.each do |version| %>
+        <div class="border border-gray-200 rounded-md p-4 bg-white">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h3 class="font-semibold text-lg"><%= version.title %></h3>
+              <p class="text-sm text-gray-500">
+                Version created: <%= version.created_at.strftime("%B %d, %Y at %I:%M %p") %>
+              </p>
+            </div>
+          </div>
+          <div class="prose prose-sm max-w-none">
+            <%= render_markdown(version.body, truncate: false) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center my-10 text-gray-500">No versions found for this note.</p>
+  <% end %>
+</div>

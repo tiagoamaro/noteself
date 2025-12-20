@@ -1,0 +1,2 @@
+# Pagy configuration
+require 'pagy'

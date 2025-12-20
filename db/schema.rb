@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_16_000118) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_20_001209) do
+  create_table "note_versions", force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.integer "note_id", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["note_id", "created_at"], name: "index_note_versions_on_note_id_and_created_at"
+    t.index ["note_id"], name: "index_note_versions_on_note_id"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -37,6 +47,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_16_000118) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "note_versions", "notes"
   add_foreign_key "notes", "users"
   add_foreign_key "sessions", "users"
 end
