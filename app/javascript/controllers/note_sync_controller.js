@@ -3,7 +3,7 @@ import { createConsumer } from "@rails/actioncable"
 
 export default class extends Controller {
   static values = { noteId: Number }
-  static targets = ["body", "title", "preview", "spinner", "successIcon"]
+  static targets = ["body", "title", "preview", "spinner", "successIcon", "spinnerContainer"]
 
   connect() {
     if (this.hasNoteIdValue) {
@@ -95,6 +95,9 @@ export default class extends Controller {
       clearTimeout(this.syncStatusTimeout)
     }
 
+    // Show the spinner container
+    this.showSpinnerContainer()
+
     // Show the spinner with transition
     this.spinnerTarget.classList.remove("opacity-0", "scale-0")
     this.spinnerTarget.classList.add("opacity-100", "scale-100")
@@ -106,6 +109,9 @@ export default class extends Controller {
     // Hide spinner with transition
     this.spinnerTarget.classList.remove("opacity-100", "scale-100")
     this.spinnerTarget.classList.add("opacity-0", "scale-0")
+
+    // Hide spinner container if success icon is also hidden
+    this.hideSpinnerContainerIfNeeded()
   }
 
   showSuccessIcon() {
@@ -115,6 +121,9 @@ export default class extends Controller {
     if (this.syncStatusTimeout) {
       clearTimeout(this.syncStatusTimeout)
     }
+
+    // Show the spinner container
+    this.showSpinnerContainer()
 
     // Show success icon with transition
     this.successIconTarget.classList.remove("opacity-0", "scale-0")
@@ -137,6 +146,35 @@ export default class extends Controller {
     // Hide success icon with transition
     this.successIconTarget.classList.remove("opacity-100", "scale-100")
     this.successIconTarget.classList.add("opacity-0", "scale-0")
+
+    // Hide spinner container if spinner is also hidden
+    this.hideSpinnerContainerIfNeeded()
+  }
+
+  showSpinnerContainer() {
+    if (!this.hasSpinnerContainerTarget) return
+
+    this.spinnerContainerTarget.classList.remove("hidden")
+    this.spinnerContainerTarget.classList.add("block")
+  }
+
+  hideSpinnerContainerIfNeeded() {
+    if (!this.hasSpinnerContainerTarget) return
+
+    // Small delay to allow icon transitions to complete, then check state
+    setTimeout(() => {
+      // Re-check if both spinner and success icon are hidden
+      const spinnerHidden = !this.hasSpinnerTarget || 
+        this.spinnerTarget.classList.contains("opacity-0")
+      const successIconHidden = !this.hasSuccessIconTarget || 
+        this.successIconTarget.classList.contains("opacity-0")
+
+      // Hide spinner container only if both are hidden
+      if (spinnerHidden && successIconHidden) {
+        this.spinnerContainerTarget.classList.remove("block")
+        this.spinnerContainerTarget.classList.add("hidden")
+      }
+    }, 300)
   }
 
   handleUpdate(data) {
