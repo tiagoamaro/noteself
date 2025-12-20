@@ -82,6 +82,26 @@
   @apply list-decimal;
 }
 
+/* Nested list indentation */
+.prose ul ul,
+.prose ol ol {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+  padding-left: 1.5rem;
+}
+
+.prose ul ul ul,
+.prose ol ol ol {
+  padding-left: 1.25rem;
+}
+
+.prose ul ol,
+.prose ol ul {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+  padding-left: 1.75rem;
+}
+
 .prose li {
   @apply mt-2 mb-2;
 }
@@ -195,6 +215,26 @@
 
 .prose-sm ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) ul:has(input[type="checkbox"]) {
   padding-left: 3.5rem;
+}
+
+/* Nested list indentation for prose-sm */
+.prose-sm ul ul,
+.prose-sm ol ol {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+  padding-left: 1.4em;
+}
+
+.prose-sm ul ul ul,
+.prose-sm ol ol ol {
+  padding-left: 1.2em;
+}
+
+.prose-sm ul ol,
+.prose-sm ol ul {
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+  padding-left: 1.6em;
 }
 
 .prose-sm li {
