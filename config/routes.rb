@@ -7,7 +7,11 @@ Rails.application.routes.draw do
       get :preview
       post :restore
     end
-    resources :note_versions, only: [ :index ], path: "versions"
+    resources :note_versions, only: [ :index ], path: "versions" do
+      member do
+        post :restore
+      end
+    end
   end
   resource :session
   resources :passwords, param: :token

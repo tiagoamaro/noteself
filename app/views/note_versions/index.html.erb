@@ -25,6 +25,14 @@
                 Version created: <%= version.created_at.strftime("%B %d, %Y at %I:%M %p") %>
               </p>
             </div>
+            <div>
+              <%= button_to "Restore", restore_note_note_version_path(@note, version), 
+                  method: :post,
+                  class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium",
+                  data: { 
+                    turbo_confirm: "Are you sure you want to restore this version? This will replace the current note content."
+                  } %>
+            </div>
           </div>
           <div class="prose prose-sm max-w-none">
             <%= render_markdown(version.body, truncate: false) %>
