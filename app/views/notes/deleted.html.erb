@@ -1,0 +1,47 @@
+<% content_for :title, "Deleted Notes" %>
+
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <div class="flex justify-between items-center mb-5">
+    <%= link_to "← Back to Notes", notes_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
+  </div>
+
+  <% if @notes.any? %>
+    <!-- Pagination -->
+    <% if @pagy.pages > 1 %>
+      <div class="flex justify-center items-center gap-2 mb-5">
+        <%== @pagy.series_nav %>
+      </div>
+    <% end %>
+
+    <div id="deleted_notes" class="min-w-full divide-y divide-gray-200 space-y-5">
+      <% @notes.each do |note| %>
+        <div id="<%= dom_id note %>" class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0 opacity-75">
+          <div class="w-full sm:w-auto my-5">
+            <span class="font-medium"><%= note.title %></span>
+            <div class="text-sm text-gray-500 mt-1 flex flex-col">
+              <span>Created: <%= note.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+              <span class="text-red-600">Deleted: <%= note.deleted_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+            </div>
+          </div>
+          <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2 items-center sm:items-stretch">
+            <%= button_to "Restore", restore_note_path(note), method: :post, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-green-600 hover:bg-green-500 text-white inline-block font-medium cursor-pointer" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Pagination -->
+    <% if @pagy.pages > 1 %>
+      <div class="flex justify-center items-center gap-2 mt-5">
+        <%== @pagy.series_nav %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-center my-10">No deleted notes found.</p>
+  <% end %>
+</div>
+

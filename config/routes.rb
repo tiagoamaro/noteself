@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :notes do
+    collection do
+      get :deleted
+    end
     member do
       get :preview
+      post :restore
     end
     resources :note_versions, only: [ :index ], path: "versions"
   end

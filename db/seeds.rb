@@ -389,3 +389,40 @@ if (first_note = Note.first)
     )
   end
 end
+
+# Create 20 deleted notes for testing soft delete functionality
+deleted_notes_titles = [
+  "Old Meeting Notes",
+  "Draft Blog Post",
+  "Shopping List",
+  "Random Thoughts",
+  "Project Ideas",
+  "Book Recommendations",
+  "Recipe Collection",
+  "Travel Plans",
+  "Learning Resources",
+  "Code Snippets",
+  "API Documentation",
+  "Team Meeting Minutes",
+  "Personal Goals",
+  "Quick Reminders",
+  "Research Notes",
+  "Design Ideas",
+  "Bug Fixes",
+  "Feature Requests",
+  "Daily Journal",
+  "Archive Content"
+]
+
+deleted_notes_titles.each_with_index do |title, index|
+  note = Note.create!(
+    user: User.first,
+    title: title,
+    body: "This is a deleted note: #{title}\n\nCreated for testing soft delete functionality.",
+    created_at: Time.current - (index + 1).days,
+    updated_at: Time.current - (index + 1).days
+  )
+
+  # Soft delete the note by setting deleted_at
+  note.update_column(:deleted_at, Time.current - (index + 1).hours)
+end
