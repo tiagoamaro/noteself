@@ -1,2 +1,2 @@
 # Pagy configuration
-require 'pagy'
+require "pagy"
